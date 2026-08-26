@@ -1,4 +1,5 @@
-import ballerina/io;
+import ballerina/http;
+
 type Task record {
     string taskId;
     string description;
@@ -38,7 +39,22 @@ type Asset record {
     WorkOrder[] workOrders;
 };
 
-public function main() {
-    io:println("Hello, World");
+map<Asset> assets = {};
+
+
+service /library on new http:Listener(8080) {
+    resource function post assets(@http:Payload Asset newAsset) returns Asset|http:Conflict {
+        if assets.hasKey(newAsset.assetTag) {
+            return http:CONFLICT;
+        }
+        assets[newAsset.assetTag] = newAsset;
+        return newAsset;
+    }
+    
+    resource function get assets() returns Asset[] {
+    Asset[] allAssets = assets.toArray();
+    return allAssets;
 }
+}
+
 
