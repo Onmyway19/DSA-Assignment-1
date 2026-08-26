@@ -61,6 +61,13 @@ service /library on new http:Listener(8080) {
         }
         return assets.get(assetTag);
     }
+    resource function put assets/[string assetTag](@http:Payload Asset updateAsset) returns Asset|http:NotFound {
+        if !assets.hasKey(assetTag) {
+            return http:NOT_FOUND;
+        }
+        assets[assetTag] = updateAsset;
+        return updateAsset;
+    }
 }
 
 
