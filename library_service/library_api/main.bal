@@ -50,11 +50,17 @@ service /library on new http:Listener(8080) {
         assets[newAsset.assetTag] = newAsset;
         return newAsset;
     }
-    
+
     resource function get assets() returns Asset[] {
     Asset[] allAssets = assets.toArray();
     return allAssets;
-}
+    }
+    resource function get assets/[string assetTag]() returns Asset|http:NotFound {
+        if !assets.hasKey(assetTag) {
+            return http:NOT_FOUND;
+        }
+        return assets.get(assetTag);
+    }
 }
 
 
