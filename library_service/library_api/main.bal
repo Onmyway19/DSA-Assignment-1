@@ -1,4 +1,5 @@
 import ballerina/http;
+import ballerina/time;
 
 type Task record {
     string taskId;
@@ -75,6 +76,33 @@ service /library on new http:Listener(8080) {
         Asset _ = assets.remove(assetTag);
         return http:NO_CONTENT;
     }
+    resource function get assets/institution/[string institution]() returns Asset[] {
+        return from Asset a in assets
+        where a.institution == institution
+        select a;
+    }
+    resource function get assets/site/[string site]() returns Asset[] {
+        return from Asset a in assets
+        where a.site == site
+        select a;
+    }
+
+    resource function get assets/overdue() returns Asset[] {
+    time:Utc now = time:utcNow();
+    time:Civil civil = time:utcToCivil(now);
+    string today = string `${civil.year}-${civil.month}-${civil.day}`;
+
+    
+    Asset[] overdueAssets = [];
+    foreach Asset a in assets {
+        foreach Schedule s in a.schedules {
+            if s.dueDate < today {
+                overdueAssets.push(a);
+                break;
+            }
+        }
+    }
+    return overdueAssets;
 }
 
-
+}
