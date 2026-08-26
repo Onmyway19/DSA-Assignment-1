@@ -68,6 +68,13 @@ service /library on new http:Listener(8080) {
         assets[assetTag] = updateAsset;
         return updateAsset;
     }
+    resource function delete assets/[string assetTag]() returns http:NoContent|http:NotFound {
+        if !assets.hasKey(assetTag) {
+            return http:NOT_FOUND;
+        }
+        Asset _ = assets.remove(assetTag);
+        return http:NO_CONTENT;
+    }
 }
 
 
