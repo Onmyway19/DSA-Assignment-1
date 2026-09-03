@@ -146,4 +146,35 @@ resource function delete assets/[string assetTag]/schedules/[string scheduleId](
     assets[assetTag] = asset;
     return asset;
 }
+resource function post assets/[string assetTag]/schedules(@http:Payload Schedule newSchedule) returns Asset|http:NotFound {
+    if !assets.hasKey(assetTag) {
+        return http:NOT_FOUND;
+    }
+    Asset asset = assets.get(assetTag);
+    asset.schedules.push(newSchedule);
+    assets[assetTag] = asset;
+    return asset;
+}
+
+resource function post assets/[string assetTag]/components(@http:Payload Component newComponent) returns Asset|http:NotFound {
+    if !assets.hasKey(assetTag) {
+        return http:NOT_FOUND;
+    }
+    Asset asset = assets.get(assetTag);
+    asset.components.push(newComponent);
+    assets[assetTag] = asset;
+    return asset;
+}
+
+resource function delete assets/[string assetTag]/components/[string compId]() returns Asset|http:NotFound {
+    if !assets.hasKey(assetTag) {
+        return http:NOT_FOUND;
+    }
+    Asset asset = assets.get(assetTag);
+    asset.components = from Component c in asset.components
+                        where c.compId != compId
+                        select c;
+    assets[assetTag] = asset;
+    return asset;
+}
 }
