@@ -42,7 +42,6 @@ type Asset record {
     Schedule[] schedules;
     WorkOrder[] workOrders;
 };
-
 map<Institution> institutions = {};
 map<Asset> assets = {};
 
