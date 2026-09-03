@@ -135,6 +135,15 @@ resource function delete institutions/[string name]() returns http:NoContent|htt
     }
     return overdueAssets;
 }
-
-
+resource function delete assets/[string assetTag]/schedules/[string scheduleId]() returns Asset|http:NotFound {
+    if !assets.hasKey(assetTag) {
+        return http:NOT_FOUND;
+    }
+    Asset asset = assets.get(assetTag);
+    asset.schedules = from Schedule s in asset.schedules
+    where s.scheduleId != scheduleId
+    select s;
+    assets[assetTag] = asset;
+    return asset;
+}
 }
