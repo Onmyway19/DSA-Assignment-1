@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package rental;
+
+message Property {
+    string property_id = 1;
+    string name = 2;
+    string location = 3;
+    string property_type = 4;
+    double price_per_night = 5;
+    string status = 6;
+}
+
+message PropertyId {
+    string property_id = 1;
+}
+
+message SearchResult {
+    bool found = 1;
+    Property property = 2;
+    string message = 3;
+}
+
+message PropertyList {
+    repeated Property properties = 1;
+}
+
+message User {
+    string user_id = 1;
+    string name = 2;
+    string role = 3;
+    string email = 4;
+}
+
+message UserCreationConfirmation {
+    int32 total_created = 1;
+    string message = 2;
+}
+
+message PropertyFilter {
+    string location = 1;
+    double max_price = 2;
+}
+
+message BookingRequest {
+    string property_id = 1;
+    string guest_id = 2;
+    string check_in = 3;
+    string check_out = 4;
+}
+
+message BookingCartResponse {
+    bool accepted = 1;
+    string message = 2;
+}
+
+message BookingConfirmation {
+    bool confirmed = 1;
+    double total_cost = 2;
+    string message = 3;
+}
+
+service RentalService {
+    rpc add_property(Property) returns (Property);
+    rpc update_property(Property) returns (Property);
+    rpc remove_property(PropertyId) returns (PropertyList);
+    rpc search_property(PropertyId) returns (SearchResult);
+    rpc create_users(stream User) returns (UserCreationConfirmation);
+    rpc list_available_properties(PropertyFilter) returns (stream Property);
+    rpc book_property(BookingRequest) returns (BookingCartResponse);
+    rpc confirm_booking(BookingRequest) returns (BookingConfirmation);
+}
