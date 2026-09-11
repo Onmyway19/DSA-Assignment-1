@@ -37,4 +37,53 @@ public function main() returns error? {
     check propStream.forEach(function(Property p) {
         io:println(" - ", p.name, " ($", p.price_per_night, ")");
     });
-}
+
+
+    // --- Test 4: book_property ---
+    BookingRequest booking = {
+        property_id: added.property_id,
+        guest_id: "u1",
+        check_in: "2026-09-20",
+        check_out: "2026-09-23"
+    };
+    BookingCartResponse cartResult = check rentalClient->book_property(booking);
+    io:println("book_property result: ", cartResult);
+
+    // --- Test 5: confirm_booking ---
+    BookingConfirmation confirmResult = check rentalClient->confirm_booking(booking);
+    io:println("confirm_booking result: ", confirmResult);
+
+    // --- Test 6: try booking the SAME dates again — should be rejected on confirm ---
+    BookingCartResponse secondCart = check rentalClient->book_property(booking);
+    io:println("second book_property result: ", secondCart);
+
+    BookingConfirmation secondConfirm = check rentalClient->confirm_booking(booking);
+    io:println("second confirm_booking result (should fail — overlap): ", secondConfirm);
+    
+    
+       // --- Test 7: update_property ---
+    Property updateReq = {
+        property_id: added.property_id,
+        name: added.name,
+        location: added.location,
+        property_type: added.property_type,
+        price_per_night: 65.0,
+        status: "AVAILABLE"
+    };
+    Property updated = check rentalClient->update_property(updateReq);
+    io:println("update_property result: ", updated);
+
+    // --- Test 8: search_property ---
+    PropertyId searchReq = {property_id: added.property_id};
+    SearchResult searchResult = check rentalClient->search_property(searchReq);
+    io:println("search_property result: ", searchResult);
+
+    // --- Test 9: search_property with a bad id (should return not found) ---
+    PropertyId badSearchReq = {property_id: "does-not-exist"};
+    SearchResult badSearchResult = check rentalClient->search_property(badSearchReq);
+    io:println("search_property (bad id) result: ", badSearchResult);
+
+    // --- Test 10: remove_property ---
+    PropertyId removeReq = {property_id: added.property_id};
+    PropertyList remaining = check rentalClient->remove_property(removeReq);
+    io:println("remove_property result — remaining properties: ", remaining.properties.length()); }
