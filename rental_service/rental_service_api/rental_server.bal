@@ -3,6 +3,8 @@ import ballerina/uuid;
 
 map<Property> properties = {};
 
+map<User> users = {};
+
 @grpc:Descriptor {value: SERVICE_DESC}
 service "RentalService" on new grpc:Listener(9090) {
 
@@ -48,13 +50,34 @@ service "RentalService" on new grpc:Listener(9090) {
             return result;
         }
     }
+    
+
     remote function create_users(stream<User, grpc:Error?> clientStream) returns UserCreationConfirmation|error {
-    return {total_created: 0, message: "Not implemented yet - G2's responsibility"};
+    int count = 0;
+    check from User u in clientStream
+        do {
+            lock {
+                users[u.user_id] = u.clone();
+            }
+            count += 1;
+        };
+    return {total_created: count, message: "Users registered successfully"};
+}
+       
+remote function list_available_properties(PropertyFilter req) returns stream<Property, error?>|error {
+    Property[] matches = [];
+    lock {
+        foreach Property p in properties {
+            boolean matchesLocation = req.location == "" || p.location == req.location;
+            boolean matchesPrice = req.max_price == 0.0 || p.price_per_night <= req.max_price;
+            if matchesLocation && matchesPrice {
+                matches.push(p.clone());
+            }
+        }
+    }
+    return matches.toStream();
 }
 
-remote function list_available_properties(PropertyFilter req) returns stream<Property, error?>|error {
-    return properties.toArray().toStream();
-}
 
 remote function book_property(BookingRequest req) returns BookingCartResponse|error {
     return {accepted: false, message: "Not implemented yet - G3's responsibility"};
