@@ -1,0 +1,64 @@
+{
+  "last_build_time": 1789234156888,
+  "last_update_time": 1789234156888,
+  "last_bal_toml_update_time": 1789231887073,
+  "distribution_version": "2201.13.5",
+  "last_modified_time": {
+    "rental_server": 1789234130487
+  },
+  "last_build_options": {
+    "testReport": false,
+    "codeCoverage": false,
+    "skipTests": true,
+    "compilationOptions": {
+      "experimental": false,
+      "observabilityIncluded": true,
+      "cloud": "",
+      "dumpGraph": false,
+      "dumpRawGraphs": false
+    }
+  },
+  "src_meta_info": [
+    {
+      "file": "C:\\Users\\LENOVO\\DSA_Assignment\\rental_server\\accommodation_pb.bal",
+      "hash": "a0dcddd43d899c2519cfd78d06dfdc273332cb2d6d0d0ee4cf83e732fa1eb843",
+      "size": 27554,
+      "lastModifiedTime": 1789234130487
+    },
+    {
+      "file": "C:\\Users\\LENOVO\\DSA_Assignment\\rental_server\\Ballerina.toml",
+      "hash": "bcae7e41998cb1379ecbbb6606d69c21a1cde35a98fb49bad1e5786521fa124b",
+      "size": 139,
+      "lastModifiedTime": 1789231887073
+    },
+    {
+      "file": "C:\\Users\\LENOVO\\DSA_Assignment\\rental_server\\rentalservice_service.bal",
+      "hash": "51e316347e419c21e7ab2f96973fdc001fa2c9834a90d23f1ec00b35f94e7967",
+      "size": 15519,
+      "lastModifiedTime": 1789230988625
+    }
+  ],
+  "target_exec_meta_info": {
+    "file": "C:\\Users\\LENOVO\\DSA_Assignment\\rental_server\\target\\backup\\bin\\rental_server.jar",
+    "hash": "3f88f8bec31393964e2eb6dc804fb2dc18899327fad35c848c1d36639c4f249c",
+    "size": 44312186,
+    "lastModifiedTime": 1789234159938
+  },
+  "settings_meta_info": {
+    "file": "C:\\Users\\LENOVO\\.ballerina\\Settings.toml",
+    "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0,
+    "lastModifiedTime": 1786180602834
+  },
+  "ballerina_toml_meta_info": {
+    "file": "C:\\Users\\LENOVO\\DSA_Assignment\\rental_server\\Ballerina.toml",
+    "hash": "bcae7e41998cb1379ecbbb6606d69c21a1cde35a98fb49bad1e5786521fa124b",
+    "size": 139,
+    "lastModifiedTime": 1789231887073
+  },
+  "imports": [
+    "ballerina/protobuf",
+    "ballerina/grpc",
+    "ballerina/time"
+  ]
+}
